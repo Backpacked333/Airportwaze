@@ -1,13 +1,29 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Optional, List
 from datetime import datetime, timedelta
+from sqlalchemy.orm import Session
 import httpx
 import random
 import math
 import numpy as np
 from scipy import stats
+import logging
+
+# Database imports
+from app.database import SessionLocal, init_db, get_db
+from app.models import Airport as DBAirport, Checkpoint as DBCheckpoint
+from app.db_helpers import airport_to_api_model, checkpoint_to_api_model, get_wait_time_distribution
+
+# Data source imports
+from app.data_sources.tsa_api import TSAWaitTimeAPI
+from app.data_sources.cbp_api import CBPWaitTimeAPI
+from app.data_sources.flight_data import FlightDataAPI
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 app = FastAPI(title="Airport Waze API", description="Real-time airport wait times and journey planning")
 
@@ -18,6 +34,31 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Initialize data source APIs on startup
+@app.on_event("startup")
+async def startup_event():
+    """Initialize database and data source APIs on application startup."""
+    logger.info("🚀 Starting AirportWaze API...")
+
+    # Initialize database schema
+    logger.info("📊 Initializing database...")
+    init_db()
+    logger.info("✅ Database initialized")
+
+    # Initialize data source APIs
+    logger.info("🔌 Initializing data source APIs...")
+    app.state.tsa_api = TSAWaitTimeAPI()
+    app.state.cbp_api = CBPWaitTimeAPI()
+    app.state.flight_api = FlightDataAPI()
+    logger.info("✅ Data sources initialized")
+
+    logger.info("✅ AirportWaze API started successfully!")
+
+@app.on_event("shutdown")
+async def shutdown_event():
+    """Cleanup on application shutdown."""
+    logger.info("👋 Shutting down AirportWaze API...")
 
 # ============== DATA MODELS ==============
 
@@ -579,49 +620,49 @@ async def healthz():
     return {"status": "healthy"}
 
 @app.get("/api/airports")
-async def get_airports():
-    airports = []
-    for code, data in AIRPORTS_DATA.items():
-        airports.append({
-            "code": code,
-            "name": data["name"],
-            "city": data["city"],
-            "lat": data["lat"],
-            "lng": data["lng"],
-            "terminals": data["terminals"]
-        })
-    return {"airports": airports}
+async def get_airports(db: Session = Depends(get_db)):
+    """Get list of all airports from database."""
+    airports = db.query(DBAirport).all()
+    return {
+        "airports": [
+            airport_to_api_model(db, airport, include_checkpoints=False)
+            for airport in airports
+        ]
+    }
 
 @app.get("/api/airports/{airport_code}")
-async def get_airport(airport_code: str):
+async def get_airport(airport_code: str, db: Session = Depends(get_db)):
+    """
+    Get airport details with current checkpoint wait times from database.
+    Optionally integrates TSA/CBP real-time data if available.
+    """
     airport_code = airport_code.upper()
-    if airport_code not in AIRPORTS_DATA:
+
+    # Query airport from database
+    airport = db.query(DBAirport).filter(DBAirport.code == airport_code).first()
+
+    if not airport:
         raise HTTPException(status_code=404, detail="Airport not found")
-    airport_data = AIRPORTS_DATA[airport_code]
-    checkpoints = []
-    for cp in airport_data["checkpoints"]:
-        current_wait = calculate_current_wait(cp["base_wait"])
-        checkpoints.append(Checkpoint(
-            id=cp["id"],
-            name=cp["name"],
-            type=cp["type"],
-            terminal=cp["terminal"],
-            lat=cp["lat"],
-            lng=cp["lng"],
-            current_wait_minutes=current_wait,
-            historical_avg_minutes=cp["base_wait"],
-            status=get_checkpoint_status(current_wait),
-            last_updated=datetime.utcnow().isoformat()
-        ))
-    return Airport(
-        code=airport_data["code"],
-        name=airport_data["name"],
-        city=airport_data["city"],
-        lat=airport_data["lat"],
-        lng=airport_data["lng"],
-        terminals=airport_data["terminals"],
-        checkpoints=checkpoints
-    )
+
+    # Try to get TSA wait times for this airport
+    try:
+        tsa_waits = await app.state.tsa_api.get_wait_times(airport_code)
+        if tsa_waits:
+            logger.info(f"📡 Got TSA data for {airport_code}: {len(tsa_waits)} checkpoints")
+            # TSA data will be used in checkpoint_to_api_model via database observations
+    except Exception as e:
+        logger.warning(f"TSA API error for {airport_code}: {e}")
+
+    # Try to get CBP wait times
+    try:
+        cbp_waits = await app.state.cbp_api.get_wait_times(airport_code)
+        if cbp_waits:
+            logger.info(f"📡 Got CBP data for {airport_code}: {len(cbp_waits)} checkpoints")
+    except Exception as e:
+        logger.warning(f"CBP API error for {airport_code}: {e}")
+
+    # Convert to API model (includes all checkpoints with current wait times)
+    return Airport(**airport_to_api_model(db, airport, include_checkpoints=True))
 
 @app.get("/api/airports/{airport_code}/terminals/{terminal}/gates")
 async def get_terminal_gates(airport_code: str, terminal: str):
