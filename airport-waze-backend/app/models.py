@@ -218,6 +218,27 @@ class TripEvent(Base):
     )
 
 
+class TelemetrySession(Base):
+    """
+    Tracks unique telemetry sessions for k-anonymity protection.
+    One session = one user's visit to an airport.
+    """
+    __tablename__ = "telemetry_sessions"
+
+    session_id = Column(UUIDType, primary_key=True, default=uuid_default)
+    user_id = Column(UUIDType, nullable=False)  # Anonymous client-generated UUID
+    airport_code = Column(String(3), ForeignKey("airports.code"), nullable=False)
+    created_at = Column(DateTime, server_default=func.now(), nullable=False)
+    ended_at = Column(DateTime)
+    observation_count = Column(Integer, default=0)
+
+    # Indexes
+    __table_args__ = (
+        Index('idx_session_airport_time', 'airport_code', 'created_at'),
+        Index('idx_session_user', 'user_id'),
+    )
+
+
 class CrowdsourcedReport(Base):
     """
     User-submitted wait time reports (legacy model, now using WaitTimeObservation).
