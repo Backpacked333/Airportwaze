@@ -2,12 +2,63 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json" />
+
+    <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>airport-waze-frontend</title>
+    <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192x192.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/icons/icon-512x512.png" />
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
+
+    <!-- Mobile Optimization -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <!-- Theme Colors -->
+    <meta name="theme-color" content="#2563eb" />
+    <meta name="msapplication-TileColor" content="#2563eb" />
+    <meta name="msapplication-navbutton-color" content="#2563eb" />
+
+    <!-- SEO & Description -->
+    <meta name="description" content="Real-time airport security wait times with GPS navigation. Know exactly how long you'll wait before you arrive." />
+    <meta name="keywords" content="airport, wait times, TSA, security, real-time, GPS, navigation" />
+    <meta name="author" content="AirportWaze" />
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="AirportWaze - Live Airport Wait Times" />
+    <meta property="og:description" content="Real-time airport security wait times with GPS navigation" />
+    <meta property="og:image" content="/icons/icon-512x512.png" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="AirportWaze - Live Airport Wait Times" />
+    <meta name="twitter:description" content="Real-time airport security wait times with GPS navigation" />
+    <meta name="twitter:image" content="/icons/icon-512x512.png" />
+
+    <title>AirportWaze - Live Airport Wait Times</title>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+
+    <!-- Structured Data for SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "MobileApplication",
+      "name": "AirportWaze",
+      "applicationCategory": "TravelApplication",
+      "offers": {
+        "@type": "Offer",
+        "price": "0"
+      },
+      "operatingSystem": "Any"
+    }
+    </script>
   </body>
 </html>

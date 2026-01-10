@@ -1,0 +1,315 @@
+/**
+ * iOS Design System Tokens
+ * Based on Apple's Human Interface Guidelines
+ */
+
+:root {
+  /* iOS System Colors - Light Mode */
+  --ios-blue: #007AFF;
+  --ios-green: #34C759;
+  --ios-indigo: #5856D6;
+  --ios-orange: #FF9500;
+  --ios-pink: #FF2D55;
+  --ios-purple: #AF52DE;
+  --ios-red: #FF3B30;
+  --ios-teal: #5AC8FA;
+  --ios-yellow: #FFCC00;
+
+  /* iOS Gray Scale */
+  --ios-gray: #8E8E93;
+  --ios-gray2: #AEAEB2;
+  --ios-gray3: #C7C7CC;
+  --ios-gray4: #D1D1D6;
+  --ios-gray5: #E5E5EA;
+  --ios-gray6: #F2F2F7;
+
+  /* iOS Semantic Colors */
+  --ios-background: #FFFFFF;
+  --ios-background-secondary: #F2F2F7;
+  --ios-background-tertiary: #FFFFFF;
+  --ios-label: #000000;
+  --ios-label-secondary: rgba(60, 60, 67, 0.6);
+  --ios-label-tertiary: rgba(60, 60, 67, 0.3);
+  --ios-separator: rgba(60, 60, 67, 0.29);
+  --ios-opaque-separator: #C6C6C8;
+
+  /* iOS Fill Colors */
+  --ios-fill: rgba(120, 120, 128, 0.2);
+  --ios-fill-secondary: rgba(120, 120, 128, 0.16);
+  --ios-fill-tertiary: rgba(118, 118, 128, 0.12);
+  --ios-fill-quaternary: rgba(116, 116, 128, 0.08);
+
+  /* iOS Shadows */
+  --ios-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12);
+  --ios-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --ios-shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+  --ios-shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.15);
+
+  /* iOS Border Radius */
+  --ios-radius-sm: 8px;
+  --ios-radius-md: 10px;
+  --ios-radius-lg: 12px;
+  --ios-radius-xl: 16px;
+  --ios-radius-2xl: 20px;
+  --ios-radius-full: 9999px;
+
+  /* iOS Spacing (Apple's 8pt grid) */
+  --ios-space-1: 4px;
+  --ios-space-2: 8px;
+  --ios-space-3: 12px;
+  --ios-space-4: 16px;
+  --ios-space-5: 20px;
+  --ios-space-6: 24px;
+  --ios-space-8: 32px;
+  --ios-space-10: 40px;
+  --ios-space-12: 48px;
+  --ios-space-16: 64px;
+
+  /* iOS Typography - San Francisco (fallback to system) */
+  --ios-font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', sans-serif;
+  --ios-font-mono: 'SF Mono', 'Monaco', 'Courier New', monospace;
+
+  /* iOS Font Sizes */
+  --ios-text-xs: 11px;
+  --ios-text-sm: 13px;
+  --ios-text-base: 15px;
+  --ios-text-lg: 17px;
+  --ios-text-xl: 19px;
+  --ios-text-2xl: 22px;
+  --ios-text-3xl: 28px;
+  --ios-text-4xl: 34px;
+
+  /* iOS Font Weights (SF Pro specific) */
+  --ios-weight-regular: 400;
+  --ios-weight-medium: 500;
+  --ios-weight-semibold: 600;
+  --ios-weight-bold: 700;
+  --ios-weight-heavy: 800;
+
+  /* iOS Letter Spacing */
+  --ios-tracking-tight: -0.41px;
+  --ios-tracking-normal: 0px;
+  --ios-tracking-wide: 0.38px;
+
+  /* iOS Line Heights */
+  --ios-leading-tight: 1.2;
+  --ios-leading-normal: 1.4;
+  --ios-leading-relaxed: 1.6;
+
+  /* iOS Transitions */
+  --ios-transition-fast: 150ms cubic-bezier(0.4, 0.0, 0.2, 1);
+  --ios-transition-base: 250ms cubic-bezier(0.4, 0.0, 0.2, 1);
+  --ios-transition-slow: 350ms cubic-bezier(0.4, 0.0, 0.2, 1);
+  --ios-transition-spring: 500ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+  /* iOS Blur */
+  --ios-blur-light: blur(20px);
+  --ios-blur-medium: blur(40px);
+  --ios-blur-heavy: blur(60px);
+
+  /* iOS Safe Area Insets (for notched devices) */
+  --ios-safe-top: env(safe-area-inset-top, 0px);
+  --ios-safe-bottom: env(safe-area-inset-bottom, 0px);
+  --ios-safe-left: env(safe-area-inset-left, 0px);
+  --ios-safe-right: env(safe-area-inset-right, 0px);
+}
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ios-blue: #0A84FF;
+    --ios-green: #32D74B;
+    --ios-indigo: #5E5CE6;
+    --ios-orange: #FF9F0A;
+    --ios-pink: #FF375F;
+    --ios-purple: #BF5AF2;
+    --ios-red: #FF453A;
+    --ios-teal: #64D2FF;
+    --ios-yellow: #FFD60A;
+
+    --ios-gray: #8E8E93;
+    --ios-gray2: #636366;
+    --ios-gray3: #48484A;
+    --ios-gray4: #3A3A3C;
+    --ios-gray5: #2C2C2E;
+    --ios-gray6: #1C1C1E;
+
+    --ios-background: #000000;
+    --ios-background-secondary: #1C1C1E;
+    --ios-background-tertiary: #2C2C2E;
+    --ios-label: #FFFFFF;
+    --ios-label-secondary: rgba(235, 235, 245, 0.6);
+    --ios-label-tertiary: rgba(235, 235, 245, 0.3);
+    --ios-separator: rgba(84, 84, 88, 0.65);
+    --ios-opaque-separator: #38383A;
+
+    --ios-fill: rgba(120, 120, 128, 0.36);
+    --ios-fill-secondary: rgba(120, 120, 128, 0.32);
+    --ios-fill-tertiary: rgba(118, 118, 128, 0.24);
+    --ios-fill-quaternary: rgba(118, 118, 128, 0.18);
+  }
+}
+
+/* iOS Base Styles */
+body {
+  font-family: var(--ios-font-family);
+  font-size: var(--ios-text-base);
+  line-height: var(--ios-leading-normal);
+  color: var(--ios-label);
+  background-color: var(--ios-background);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* iOS Typography Classes */
+.ios-title-large {
+  font-size: var(--ios-text-4xl);
+  font-weight: var(--ios-weight-bold);
+  letter-spacing: var(--ios-tracking-tight);
+  line-height: var(--ios-leading-tight);
+}
+
+.ios-title {
+  font-size: var(--ios-text-3xl);
+  font-weight: var(--ios-weight-bold);
+  letter-spacing: var(--ios-tracking-tight);
+}
+
+.ios-headline {
+  font-size: var(--ios-text-lg);
+  font-weight: var(--ios-weight-semibold);
+}
+
+.ios-body {
+  font-size: var(--ios-text-base);
+  font-weight: var(--ios-weight-regular);
+}
+
+.ios-callout {
+  font-size: var(--ios-text-base);
+  font-weight: var(--ios-weight-regular);
+}
+
+.ios-subheadline {
+  font-size: var(--ios-text-sm);
+  font-weight: var(--ios-weight-regular);
+}
+
+.ios-footnote {
+  font-size: var(--ios-text-xs);
+  font-weight: var(--ios-weight-regular);
+  color: var(--ios-label-secondary);
+}
+
+.ios-caption {
+  font-size: var(--ios-text-xs);
+  font-weight: var(--ios-weight-regular);
+  color: var(--ios-label-tertiary);
+}
+
+/* iOS Card */
+.ios-card {
+  background-color: var(--ios-background-secondary);
+  border-radius: var(--ios-radius-lg);
+  padding: var(--ios-space-4);
+  box-shadow: var(--ios-shadow-sm);
+}
+
+/* iOS List */
+.ios-list {
+  background-color: var(--ios-background-secondary);
+  border-radius: var(--ios-radius-lg);
+  overflow: hidden;
+}
+
+.ios-list-item {
+  padding: var(--ios-space-3) var(--ios-space-4);
+  border-bottom: 1px solid var(--ios-separator);
+  background-color: var(--ios-background-tertiary);
+  transition: background-color var(--ios-transition-fast);
+}
+
+.ios-list-item:last-child {
+  border-bottom: none;
+}
+
+.ios-list-item:active {
+  background-color: var(--ios-fill);
+}
+
+/* iOS Button */
+.ios-button {
+  font-size: var(--ios-text-lg);
+  font-weight: var(--ios-weight-semibold);
+  padding: var(--ios-space-3) var(--ios-space-6);
+  border-radius: var(--ios-radius-lg);
+  border: none;
+  background-color: var(--ios-blue);
+  color: white;
+  transition: all var(--ios-transition-base);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.ios-button:active {
+  transform: scale(0.96);
+  opacity: 0.8;
+}
+
+.ios-button-secondary {
+  background-color: var(--ios-fill);
+  color: var(--ios-blue);
+}
+
+/* iOS Badge */
+.ios-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--ios-space-1) var(--ios-space-2);
+  border-radius: var(--ios-radius-full);
+  font-size: var(--ios-text-xs);
+  font-weight: var(--ios-weight-semibold);
+  background-color: var(--ios-fill);
+  color: var(--ios-label);
+}
+
+/* iOS Frosted Glass */
+.ios-frosted {
+  background-color: rgba(242, 242, 247, 0.8);
+  backdrop-filter: var(--ios-blur-medium);
+  -webkit-backdrop-filter: var(--ios-blur-medium);
+}
+
+@media (prefers-color-scheme: dark) {
+  .ios-frosted {
+    background-color: rgba(28, 28, 30, 0.8);
+  }
+}
+
+/* iOS Haptic Feedback Simulation */
+@keyframes ios-haptic {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(0.98); }
+}
+
+.ios-haptic {
+  animation: ios-haptic 100ms ease-out;
+}
+
+/* iOS Smooth Scrolling */
+.ios-scroll {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
+/* iOS Status Bar Height */
+.ios-status-bar-spacer {
+  height: max(var(--ios-safe-top), 20px);
+}
+
+/* iOS Home Indicator Spacer */
+.ios-home-indicator-spacer {
+  height: max(var(--ios-safe-bottom), 8px);
+}
