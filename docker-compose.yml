@@ -1,0 +1,82 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:16-alpine
+    container_name: airportwaze-postgres
+    environment:
+      POSTGRES_USER: airportwaze
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-changeme}
+      POSTGRES_DB: airportwaze
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U airportwaze"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - airportwaze-network
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: airportwaze-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - airportwaze-network
+
+  # Backend API
+  backend:
+    build:
+      context: ./airport-waze-backend
+      dockerfile: Dockerfile
+    container_name: airportwaze-backend
+    env_file:
+      - ./airport-waze-backend/.env
+    environment:
+      DATABASE_URL: postgresql+psycopg://airportwaze:${DB_PASSWORD:-changeme}@postgres:5432/airportwaze
+      REDIS_URL: redis://redis:6379/0
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - airportwaze-network
+    restart: unless-stopped
+
+  # Frontend
+  frontend:
+    build:
+      context: ./airport-waze-frontend
+      dockerfile: Dockerfile
+    container_name: airportwaze-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - airportwaze-network
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  airportwaze-network:
+    driver: bridge
