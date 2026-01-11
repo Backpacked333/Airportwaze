@@ -31,6 +31,8 @@ from app.routes import (
     wait_times_router,
     health_router,
     tsa_router,
+    ai_features_router,
+    notifications_router,
 )
 
 # Setup logging first
@@ -74,6 +76,8 @@ app.include_router(journey_router, prefix=settings.API_V1_PREFIX)
 app.include_router(predictions_router, prefix=settings.API_V1_PREFIX)
 app.include_router(wait_times_router, prefix=settings.API_V1_PREFIX)
 app.include_router(tsa_router, prefix=settings.API_V1_PREFIX)
+app.include_router(ai_features_router, prefix=settings.API_V1_PREFIX)
+app.include_router(notifications_router, prefix=settings.API_V1_PREFIX)
 
 
 @app.on_event("startup")
