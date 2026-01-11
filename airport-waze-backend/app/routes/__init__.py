@@ -11,6 +11,7 @@ from app.routes.predictions import router as predictions_router
 from app.routes.wait_times import router as wait_times_router
 from app.routes.health import router as health_router
 from app.routes.tsa import router as tsa_router
+from app.routes.location_intelligence import router as location_intelligence_router
 
 __all__ = [
     "airports_router",
@@ -20,4 +21,5 @@ __all__ = [
     "wait_times_router",
     "health_router",
     "tsa_router",
+    "location_intelligence_router",
 ]
