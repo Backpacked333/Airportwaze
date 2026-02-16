@@ -58,13 +58,15 @@
 
 ## Quick Start
 
+> **🚀 Want to deploy quickly?** See [SUPABASE_SETUP.md](./SUPABASE_SETUP.md) for deploying with Supabase (free tier available, no Docker required).
+
 ### Prerequisites
 - Docker & Docker Compose (recommended)
 - OR:
   - Python 3.12+
   - Node.js 20+
-  - PostgreSQL 16
-  - Redis 7
+  - PostgreSQL 16 (or Supabase)
+  - Redis 7 (optional)
 
 ### Option 1: Docker Compose (Recommended)
 
