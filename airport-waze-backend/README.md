@@ -40,7 +40,6 @@ airport-waze-backend/
 ├── app/
 │   ├── __init__.py
 │   ├── main.py                    # FastAPI application entry point
-│   ├── main_v2.py                 # Latest version with Monte Carlo
 │   ├── core/
 │   │   ├── __init__.py
 │   │   ├── config.py              # Pydantic settings
@@ -217,9 +216,6 @@ docker run --name airportwaze-redis \
 ```bash
 # Using uvicorn directly
 uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
-
-# Or using the latest version
-uvicorn app.main_v2:app --reload --host 0.0.0.0 --port 8000
 
 # With auto-reload on code changes
 uvicorn app.main:app --reload --log-level debug

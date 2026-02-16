@@ -149,7 +149,7 @@ class LocationIntelligenceService:
         epsilon = max_radius_meters / 111000  # Convert meters to degrees
 
         # Run DBSCAN clustering
-        clustering = DBSCAN(eps=epsilon, min_samples=min_samples, metric='haversold').fit(coordinates)
+        clustering = DBSCAN(eps=epsilon, min_samples=min_samples, metric='euclidean').fit(coordinates)
 
         # Process clusters
         discovered = []

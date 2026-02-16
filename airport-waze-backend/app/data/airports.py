@@ -256,65 +256,6 @@ AIRPORTS_DATA = {
     },
 }
 
-crowdsourced_reports: list[dict] = []
-
-def haversine_distance(lat1: float, lng1: float, lat2: float, lng2: float) -> float:
-    R = 6371000
-    phi1 = math.radians(lat1)
-    phi2 = math.radians(lat2)
-    delta_phi = math.radians(lat2 - lat1)
-    delta_lambda = math.radians(lng2 - lng1)
-    a = math.sin(delta_phi/2)**2 + math.cos(phi1) * math.cos(phi2) * math.sin(delta_lambda/2)**2
-    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1-a))
-    return R * c
-
-def get_time_multiplier() -> float:
-    now = datetime.utcnow()
-    hour = now.hour
-    day = now.weekday()
-    if 6 <= hour <= 9 or 16 <= hour <= 20:
-        multiplier = 1.4
-    elif 22 <= hour or hour <= 5:
-        multiplier = 0.6
-    else:
-        multiplier = 1.0
-    if day in [4, 5, 6]:
-        multiplier *= 1.2
-    return multiplier
-
-def calculate_current_wait(base_wait: int) -> int:
-    multiplier = get_time_multiplier()
-    variation = random.uniform(0.8, 1.2)
-    return max(2, min(int(base_wait * multiplier * variation), 90))
-
-def get_checkpoint_status(wait_minutes: int) -> str:
-    if wait_minutes <= 10:
-        return "low"
-    elif wait_minutes <= 25:
-        return "moderate"
-    elif wait_minutes <= 40:
-        return "high"
-    return "very_high"
-
-def calculate_walking_time(lat1: float, lng1: float, lat2: float, lng2: float, mobility_factor: float = 1.0) -> tuple[int, int]:
-    distance = haversine_distance(lat1, lng1, lat2, lng2)
-    walking_speed = 1.4 / mobility_factor
-    time_seconds = distance / walking_speed
-    return int(time_seconds / 60) + 1, int(distance)
-
-def get_gate_position(airport_code: str, terminal: str, gate: str) -> tuple[float, float]:
-    airport_data = AIRPORTS_DATA.get(airport_code)
-    if not airport_data:
-        return 0.0, 0.0
-    gates = airport_data.get("gates", {}).get(terminal, {})
-    if gate in gates:
-        return gates[gate]["lat"], gates[gate]["lng"]
-    if gates:
-        first_gate = list(gates.values())[0]
-        return first_gate["lat"], first_gate["lng"]
-    return airport_data["lat"], airport_data["lng"]
-
-
 
 def get_gate_position(airport_code: str, terminal: str, gate: str) -> tuple[float, float]:
     """Get the GPS coordinates for a specific gate."""

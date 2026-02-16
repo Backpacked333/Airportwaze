@@ -6,12 +6,6 @@ from app.models.location_tracking import (
     DiscoveredCheckpoint,
     AirlineCheckpointMapping
 )
-from app.models.notifications import (
-    NotificationPreference,
-    NotificationHistory,
-    AlertRule,
-    UserLearningProfile
-)
 
 __all__ = [
     "WaitTimeReport",
@@ -19,8 +13,4 @@ __all__ = [
     "LocationTrace",
     "DiscoveredCheckpoint",
     "AirlineCheckpointMapping",
-    "NotificationPreference",
-    "NotificationHistory",
-    "AlertRule",
-    "UserLearningProfile"
 ]

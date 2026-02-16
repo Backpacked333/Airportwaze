@@ -7,22 +7,22 @@ from fastapi.testclient import TestClient
 from datetime import datetime, timedelta
 from unittest.mock import patch, MagicMock
 
-# Import both main applications for testing
+# Import applications for testing
 from app.main import app as main_app
-from app.main_v2 import app as main_v2_app
+from app.main_old import app as legacy_app
 
 
 # Fixtures
 @pytest.fixture
 def client_v1():
-    """Test client for main.py (legacy API)"""
-    return TestClient(main_app)
+    """Test client for main_old.py (legacy API)"""
+    return TestClient(legacy_app)
 
 
 @pytest.fixture
 def client_v2():
-    """Test client for main_v2.py (production API)"""
-    return TestClient(main_v2_app)
+    """Test client for main.py (production API)"""
+    return TestClient(main_app)
 
 
 @pytest.fixture
@@ -477,7 +477,7 @@ def test_multiple_concurrent_requests(client_v1):
 @pytest.mark.unit
 def test_journey_request_validation():
     """Test journey request data validation"""
-    from app.main import JourneyRequest
+    from app.schemas.journey import JourneyRequest
 
     # Valid request
     valid_data = {
@@ -494,7 +494,7 @@ def test_journey_request_validation():
 @pytest.mark.unit
 def test_wait_time_report_validation():
     """Test wait time report data validation"""
-    from app.main import WaitTimeReport
+    from app.schemas.wait_time import WaitTimeReport
 
     # Valid report
     valid_data = {

@@ -1,6 +1,6 @@
 """Wait time service for crowdsourced reports."""
 import logging
-from typing import List, Dict
+from typing import List, Dict, Optional
 from datetime import datetime, timedelta
 from sqlalchemy.orm import Session
 

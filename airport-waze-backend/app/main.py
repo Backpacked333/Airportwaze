@@ -31,8 +31,7 @@ from app.routes import (
     wait_times_router,
     health_router,
     tsa_router,
-    ai_features_router,
-    notifications_router,
+    location_intelligence_router,
 )
 
 # Setup logging first
@@ -44,7 +43,7 @@ app = FastAPI(
     title=settings.APP_NAME,
     description="Real-time airport wait times, journey planning, and probabilistic flight predictions",
     version=settings.APP_VERSION,
-    docs_url="/docs" if settings.DEBUG else None,  # Disable docs in production
+    docs_url="/docs" if settings.DEBUG else None,
     redoc_url="/redoc" if settings.DEBUG else None,
 )
 
@@ -76,8 +75,7 @@ app.include_router(journey_router, prefix=settings.API_V1_PREFIX)
 app.include_router(predictions_router, prefix=settings.API_V1_PREFIX)
 app.include_router(wait_times_router, prefix=settings.API_V1_PREFIX)
 app.include_router(tsa_router, prefix=settings.API_V1_PREFIX)
-app.include_router(ai_features_router, prefix=settings.API_V1_PREFIX)
-app.include_router(notifications_router, prefix=settings.API_V1_PREFIX)
+app.include_router(location_intelligence_router, prefix=settings.API_V1_PREFIX)
 
 
 @app.on_event("startup")
@@ -116,7 +114,6 @@ async def startup_event():
 async def shutdown_event():
     """Clean up on application shutdown."""
     logger.info("Shutting down application")
-    # Add any cleanup logic here
     logger.info("Shutdown complete")
 
 
@@ -136,7 +133,7 @@ if __name__ == "__main__":
     import uvicorn
 
     uvicorn.run(
-        "app.main_v2:app",
+        "app.main:app",
         host="0.0.0.0",
         port=8000,
         reload=settings.DEBUG,

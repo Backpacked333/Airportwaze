@@ -1,8 +1,4 @@
-"""
-Routes module for AirportWaze API.
-
-This module imports and exports all API routers for easy inclusion in the main FastAPI application.
-"""
+"""Routes module for AirportWaze API."""
 
 from app.routes.airports import router as airports_router
 from app.routes.auth import router as auth_router
@@ -12,12 +8,6 @@ from app.routes.wait_times import router as wait_times_router
 from app.routes.health import router as health_router
 from app.routes.tsa import router as tsa_router
 from app.routes.location_intelligence import router as location_intelligence_router
-from app.routes.ai_features import get_routers
-
-# Get AI feature routers (includes both AI and notifications)
-ai_routers = get_routers()
-ai_features_router = ai_routers[0]
-notifications_router = ai_routers[1]
 
 __all__ = [
     "airports_router",
@@ -28,6 +18,4 @@ __all__ = [
     "health_router",
     "tsa_router",
     "location_intelligence_router",
-    "ai_features_router",
-    "notifications_router",
 ]

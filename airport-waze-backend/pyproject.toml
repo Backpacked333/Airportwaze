@@ -25,12 +25,6 @@ python-multipart = "^0.0.6"
 slowapi = "^0.1.9"
 structlog = "^24.1.0"
 sentry-sdk = {extras = ["fastapi"], version = "^1.40.0"}
-# ML and Time Series Dependencies
-prophet = "^1.1.5"
-statsmodels = "^0.14.1"
-pandas = "^2.2.0"
-# Additional ML utilities
-joblib = "^1.4.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.4.4"
