@@ -1,0 +1,31 @@
+# Docker Compose override for Supabase deployment
+# Usage: docker-compose -f docker-compose.yml -f docker-compose.supabase.yml up -d
+
+version: '3.8'
+
+services:
+  # Remove local postgres and redis - use Supabase + Upstash instead
+  postgres:
+    image: tianon/true  # Dummy service that exits immediately
+    restart: "no"
+    command: ["true"]
+
+  redis:
+    image: tianon/true  # Dummy service that exits immediately
+    restart: "no"
+    command: ["true"]
+
+  # Backend now connects to Supabase
+  backend:
+    environment:
+      # Override with your Supabase connection string
+      DATABASE_URL: ${SUPABASE_DATABASE_URL}
+      # Override with Upstash Redis URL (optional)
+      REDIS_URL: ${UPSTASH_REDIS_URL:-redis://localhost:6379/0}
+    depends_on:
+      - postgres  # Still depends on it, but it's a no-op
+      - redis
+
+  # Frontend stays the same
+  frontend:
+    # No changes needed
